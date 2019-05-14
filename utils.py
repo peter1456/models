@@ -47,8 +47,8 @@ def plot_accuracy(history):
 
 def plot_loss(history):
     # Plot training & validation loss values
-    plot(history.history['loss'])
-    plot(history.history['val_loss'])
+    plot(history['loss'])
+    plot(history['val_loss'])
     title('Model loss')
     ylabel('Loss')
     xlabel('Epoch')
