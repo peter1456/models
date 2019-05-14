@@ -1,8 +1,9 @@
 from tensorflow.keras.datasets.cifar10 import load_data as ld
+from tensorflow.keras.backend import get_session
 from tensorflow import RunMetadata
 from tensorflow.profiler import profile
-from tensorflow.profiler.ProfileOptionBuilder import float_operation
-from matplotlib.pyplot import plot, title, ylabel, xlabel, leged, show
+from tensorflow.profiler import ProfileOptionBuilder
+from matplotlib.pyplot import plot, title, ylabel, xlabel, legend, show
 
 import numpy as np
 from os.path import isfile
@@ -57,11 +58,11 @@ def plot_loss(history):
 # https://stackoverflow.com/questions/49525776/how-to-calculate-a-mobilenet-flops-in-keras
 def get_flops(model):
     """ Provide the number of flops for a tf.keras model """
-    run_meta = tf.RunMetadata()
-    opts = tf.profiler.ProfileOptionBuilder.float_operation()
+    run_meta = RunMetadata()
+    opts = ProfileOptionBuilder.float_operation()
 
     # We use the Keras session graph in the call to the profiler.
-    flops = tf.profiler.profile(graph=K.get_session().graph,
+    flops = profile(graph=get_session().graph,
                                 run_meta=run_meta, cmd='op', options=opts)
 
     return flops.total_float_ops  # Prints the "flops" of the model.
