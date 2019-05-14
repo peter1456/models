@@ -18,28 +18,28 @@ print(np.squeeze(np.shape(y_train[0])))
 n_epochs = 2
 
 
-# shuffle_net = ShuffleNet(
-#         # input_shape,
-#         np.shape(x_train[0]),
-#         # nb_classes,
-#         np.squeeze(np.shape((y_train[0]))),
-#         include_top=True,
-#         weights=None,
-#         nb_groups=8     # can vary from 1 2 3 4 8
-# )
-# shuffle_net.compile(
-#         loss=categorical_crossentropy,
-#         optimizer=Adam(),
-#         metrics=['accuracy']
-# )
-# shuffle_net.fit(
-#         x_train,
-#         y_train,
-#         batch_size=200,
-#         epochs=n_epochs,
-#         verbose=1,
-#         validation_data=(x_test, y_test)
-# )
+shuffle_net = ShuffleNet(
+        # input_shape,
+        np.shape(x_train[0]),
+        # nb_classes,
+        np.squeeze(np.shape((y_train[0]))),
+        include_top=True,
+        weights=None,
+        nb_groups=8     # can vary from 1 2 3 4 8
+)
+shuffle_net.compile(
+        loss=categorical_crossentropy,
+        optimizer=Adam(),
+        metrics=['accuracy']
+)
+shuffle = shuffle_net.fit(
+        x_train,
+        y_train,
+        batch_size=200,
+        epochs=n_epochs,
+        verbose=1,
+        validation_data=(x_test, y_test)
+)
 
 mobile_net = MobileNet(
         np.shape(x_train[0]),
@@ -59,7 +59,12 @@ mobile = mobile_net.fit(
         validation_data=(x_test, y_test)
 )
 
-plot(mobile.history)
+
+plot_accuracy(shuffle.history)
+plot_loss(shuffle.history)
+
+plot_accuracy(mobile.history)
+plot_loss(mobile.history)
 
 # score = model.evaluate(x_test, y_test, verbose=0)
 # print('Test loss:', score[0])

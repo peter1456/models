@@ -29,7 +29,7 @@ num_classes = 10;
 def one_hot(a, num_classes):
   return np.squeeze(np.eye(num_classes)[a.reshape(-1)])
 
-def plot(history):
+def plot_accuracy(history):
     # Plot training & validation accuracy values
     plt.plot(history['acc'])
     plt.plot(history['val_acc'])
@@ -39,4 +39,13 @@ def plot(history):
     plt.legend(['Train', 'Test'], loc='upper left')
     plt.show()
 
+def plot_loss(history):
+    # Plot training & validation loss values
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('Model loss')
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Test'], loc='upper left')
+    plt.show()
 
