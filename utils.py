@@ -1,4 +1,5 @@
 from tensorflow.keras.datasets.cifar10 import load_data as ld
+import matplotlib.pyplot as plt
 import numpy as np
 from os.path import isfile
 import pickle
