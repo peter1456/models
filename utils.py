@@ -36,23 +36,23 @@ def one_hot(a, num_classes):
 
 def plot_accuracy(history):
     # Plot training & validation accuracy values
-    plt.plot(history['acc'])
-    plt.plot(history['val_acc'])
-    plt.title('Model accuracy')
-    plt.ylabel('Accuracy')
-    plt.xlabel('Epoch')
-    plt.legend(['Train', 'Test'], loc='upper left')
-    plt.show()
+    plot(history['acc'])
+    plot(history['val_acc'])
+    title('Model accuracy')
+    ylabel('Accuracy')
+    xlabel('Epoch')
+    legend(['Train', 'Test'], loc='upper left')
+    show()
 
 def plot_loss(history):
     # Plot training & validation loss values
-    plt.plot(history.history['loss'])
-    plt.plot(history.history['val_loss'])
-    plt.title('Model loss')
-    plt.ylabel('Loss')
-    plt.xlabel('Epoch')
-    plt.legend(['Train', 'Test'], loc='upper left')
-    plt.show()
+    plot(history.history['loss'])
+    plot(history.history['val_loss'])
+    title('Model loss')
+    ylabel('Loss')
+    xlabel('Epoch')
+    legend(['Train', 'Test'], loc='upper left')
+    show()
 
 # https://stackoverflow.com/questions/49525776/how-to-calculate-a-mobilenet-flops-in-keras
 def get_flops(model):
