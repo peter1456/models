@@ -2,7 +2,8 @@ from tensorflow.keras.datasets.cifar10 import load_data as ld
 from tensorflow import RunMetadata
 from tensorflow.profiler import profile
 from tensorflow.profiler.ProfileOptionBuilder import float_operation
-import matplotlib.pyplot as plt
+from matplotlib.pyplot import plot, title, ylabel, xlabel, leged, show
+
 import numpy as np
 from os.path import isfile
 import pickle
