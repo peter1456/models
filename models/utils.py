@@ -29,3 +29,14 @@ num_classes = 10;
 def one_hot(a, num_classes):
   return np.squeeze(np.eye(num_classes)[a.reshape(-1)])
 
+def plot(history):
+    # Plot training & validation accuracy values
+    plt.plot(history['acc'])
+    plt.plot(history['val_acc'])
+    plt.title('Model accuracy')
+    plt.ylabel('Accuracy')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Test'], loc='upper left')
+    plt.show()
+
+
