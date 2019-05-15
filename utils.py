@@ -43,7 +43,7 @@ def plot_accuracy(history):
     title('Model accuracy')
     ylabel('Accuracy')
     xlabel('Epoch')
-    legend(['Train', 'Test'], loc='upper left')
+    legend(['Train', 'Validation'], loc='upper right')
     return f
 
 def plot_loss(history):
@@ -54,7 +54,7 @@ def plot_loss(history):
     title('Model loss')
     ylabel('Loss')
     xlabel('Epoch')
-    legend(['Train', 'Test'], loc='upper left')
+    legend(['Train', 'Validation'], loc='upper right')
     return f
 
 # https://stackoverflow.com/questions/49525776/how-to-calculate-a-mobilenet-flops-in-keras
