@@ -3,7 +3,7 @@ from tensorflow.keras.backend import get_session
 from tensorflow import RunMetadata
 from tensorflow.profiler import profile
 from tensorflow.profiler import ProfileOptionBuilder
-from matplotlib.pyplot import plot, title, ylabel, xlabel, legend, show
+from matplotlib.pyplot import plot, title, ylabel, xlabel, legend, show, figure
 
 import numpy as np
 from os.path import isfile
@@ -37,23 +37,25 @@ def one_hot(a, num_classes):
 
 def plot_accuracy(history):
     # Plot training & validation accuracy values
+    f = figure()
     plot(history['acc'])
     plot(history['val_acc'])
     title('Model accuracy')
     ylabel('Accuracy')
     xlabel('Epoch')
     legend(['Train', 'Test'], loc='upper left')
-    show()
+    return f
 
 def plot_loss(history):
     # Plot training & validation loss values
+    f = figure()
     plot(history['loss'])
     plot(history['val_loss'])
     title('Model loss')
     ylabel('Loss')
     xlabel('Epoch')
     legend(['Train', 'Test'], loc='upper left')
-    show()
+    return f
 
 # https://stackoverflow.com/questions/49525776/how-to-calculate-a-mobilenet-flops-in-keras
 def get_flops(model):
