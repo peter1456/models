@@ -123,7 +123,7 @@ def ShuffleNet(input_shape, nb_classes, include_top=True, weights=None, nb_group
                kernel_size=(3, 3),
                strides=2,
                use_bias=False,
-               padding='same'
+               padding='same',
                activation='relu')(x_in)
     # x = BatchNormalization()(x)
     # x = Activation('relu')(x)
