@@ -4,12 +4,14 @@ from tensorflow import RunMetadata
 from tensorflow.profiler import profile
 from tensorflow.profiler import ProfileOptionBuilder
 from matplotlib.pyplot import plot, title, ylabel, xlabel, legend, show, figure
+from keras.preprocessing.image import ImageDataGenerator
 
 import numpy as np
 from os.path import isfile
 import pickle
 
 def load_data():
+    num_classes = 10
 
     # if isfile('data/data.pickle'):
     #     with open('data/data.pickle', 'r') as f:
@@ -17,23 +19,22 @@ def load_data():
     #         return data[0], data[1]
     # else:
 
-    (x_train, y_train_), (x_test, y_test_) = ld()
-    x_train = x_train.astype('float32') / 255
-    x_test = x_test.astype('float32') / 255
+    (x_train, y_train), (x_test, y_test) = ld()
+    # x_train = x_train.astype('float32') / 255
+    # x_test = x_test.astype('float32') / 255
     # x_train.shape
-    y_train = one_hot(y_train_, num_classes)
-    y_test = one_hot(y_test_, num_classes)
+    # Convert class vectors to binary class matrices.
+    y_train = keras.utils.to_categorical(y_train, num_classes)
+    y_test = keras.utils.to_categorical(y_test, num_classes)
 
         # with open('data/data.pickle', 'wb') as f:
         #     pickle.dump(((x_train, y_train), (x_test, y_test)), f)
 
-    return (x_train, y_train), (x_test, y_test)
+    # standardize instead of divide by 255, also flip the image horizontally
+    datagen = ImageDataGenerator(featurewise_center=True, featurewise_std_normalization=True, horizontal_flip=True)
+    datagen.fit(x_train)
 
-
-# one-hot encoding of labels
-num_classes = 10;
-def one_hot(a, num_classes):
-  return np.squeeze(np.eye(num_classes)[a.reshape(-1)])
+    return (x_train, y_train), (x_test, y_test), datagen
 
 def plot_accuracy(history):
     # Plot training & validation accuracy values

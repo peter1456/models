@@ -17,16 +17,18 @@ from tensorflow.keras.layers import (
         Dense
 )
 
+from tensorflow.keras import initializers
+
 
         
         
 
 
-def _stage(tensor, nb_groups, in_channels, out_channels, repeat):
-    x = _shufflenet_unit(tensor, nb_groups, in_channels, out_channels, 2)
+def _stage(tensor, nb_groups, in_channels, out_channels, repeat, shuffle):
+    x = _shufflenet_unit(tensor, nb_groups, in_channels, out_channels, 2, shuffle)
 
     for _ in range(repeat):
-        x = _shufflenet_unit(x, nb_groups, out_channels, out_channels, 1)
+        x = _shufflenet_unit(x, nb_groups, out_channels, out_channels, 1, shuffle)
 
     return x
 
@@ -51,7 +53,8 @@ def _pw_group(tensor, nb_groups, in_channels, out_channels):
                    kernel_size=(1, 1),
                    padding='same',
                    use_bias=False,
-                   strides=1)(x)
+                   strides=1,
+                   kernel_initializer='he_normal')(x)
         )
 
     return Concatenate(axis=-1)(pw_convs)
@@ -70,7 +73,7 @@ def _shuffle(x, nb_groups):
 
     return Lambda(shuffle_layer)(x)
 
-def _shufflenet_unit(tensor, nb_groups, in_channels, out_channels, strides, shuffle=True, bottleneck=4):
+def _shufflenet_unit(tensor, nb_groups, in_channels, out_channels, strides, shuffle, bottleneck=4):
     bottleneck_channels = out_channels // bottleneck
 
     x = _pw_group(tensor, nb_groups, in_channels, bottleneck_channels)
@@ -116,7 +119,7 @@ def _info(nb_groups):
 
 
 """ Factory function providing a keras ShuffleNet model"""
-def ShuffleNet(input_shape, nb_classes, include_top=True, weights=None, nb_groups=8):
+def ShuffleNet(input_shape, nb_classes, include_top=True, weights=None, nb_groups=8, shuffle=True):
     x_in = Input(shape=input_shape)
 
     x = Conv2D(24,
@@ -124,7 +127,8 @@ def ShuffleNet(input_shape, nb_classes, include_top=True, weights=None, nb_group
                strides=2,
                use_bias=False,
                padding='same',
-               activation='relu')(x_in)
+               activation='relu',
+               kernel_initializer='he_normal')(x_in)
     # x = BatchNormalization()(x)
     # x = Activation('relu')(x)
 
@@ -134,11 +138,11 @@ def ShuffleNet(input_shape, nb_classes, include_top=True, weights=None, nb_group
 
     channels_list, repeat_list = _info(nb_groups)
     for i, (out_channels, repeat) in enumerate(zip(channels_list[1:], repeat_list[1:]), start=1):
-        x = _stage(x, nb_groups, channels_list[i-1], out_channels, repeat)
+        x = _stage(x, nb_groups, channels_list[i-1], out_channels, repeat, shuffle)
 
     if include_top:
         x = GlobalAveragePooling2D()(x)
-        x = Dense(nb_classes, activation='softmax')(x)
+        x = Dense(nb_classes, activation='softmax', kernel_initializer='he_normal')(x)
 
     model = Model(inputs=x_in, outputs=x)
 

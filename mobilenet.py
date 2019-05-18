@@ -3,6 +3,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.layers import *
 from tensorflow.keras.activations import *
 from tensorflow.keras.callbacks import *
+from tensorflow.keras import initializers
 
 
 def get_conv_block(tensor, channels, strides, alpha=1.0, name=''):
@@ -13,6 +14,7 @@ def get_conv_block(tensor, channels, strides, alpha=1.0, name=''):
                strides=strides,
                use_bias=False,
                padding='same',
+               kernel_initializer='he_normal',
                name='{}_conv'.format(name))(tensor)
     x = BatchNormalization(name='{}_bn'.format(name))(x)
     x = Activation('relu', name='{}_act'.format(name))(x)
@@ -28,6 +30,7 @@ def get_dw_sep_block(tensor, channels, strides, alpha=1.0, name=''):
                         strides=strides,
                         use_bias=False,
                         padding='same',
+                        kernel_initializer='he_normal',
                         name='{}_dw'.format(name))(tensor)
     x = BatchNormalization(name='{}_bn1'.format(name))(x)
     x = Activation('relu', name='{}_act1'.format(name))(x)
@@ -38,6 +41,7 @@ def get_dw_sep_block(tensor, channels, strides, alpha=1.0, name=''):
                strides=(1, 1),
                use_bias=False,
                padding='same',
+               kernel_initializer='he_normal',
                name='{}_pw'.format(name))(x)
     x = BatchNormalization(name='{}_bn2'.format(name))(x)
     x = Activation('relu', name='{}_act2'.format(name))(x)
