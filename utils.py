@@ -9,7 +9,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import numpy as np
 from os.path import isfile
 import pickle
-import tensorflow.keras.utils
+from tensorflow.keras.utils import to_categorical
 
 def load_data(k):
     num_classes = 10
@@ -27,8 +27,8 @@ def load_data(k):
     # x_test = x_test.astype('float32') / 255
     # x_train.shape
     # Convert class vectors to binary class matrices.
-    y_train = keras.utils.to_categorical(y_train, num_classes)
-    y_test = keras.utils.to_categorical(y_test, num_classes)
+    y_train = to_categorical(y_train, num_classes)
+    y_test = to_categorical(y_test, num_classes)
 
         # with open('data/data.pickle', 'wb') as f:
         #     pickle.dump(((x_train, y_train), (x_test, y_test)), f)
