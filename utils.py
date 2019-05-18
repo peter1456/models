@@ -1,3 +1,5 @@
+import tensorflow as tf
+import keras
 from tensorflow.keras.datasets.cifar10 import load_data as ld
 from tensorflow.keras.backend import get_session
 from tensorflow import RunMetadata
@@ -26,7 +28,7 @@ def load_data(k):
     # x_train = x_train.astype('float32') / 255
     # x_test = x_test.astype('float32') / 255
     # x_train.shape
-    
+
     y_train = to_categorical(y_train, num_classes)
     y_test = to_categorical(y_test, num_classes)
 
