@@ -9,6 +9,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import numpy as np
 from os.path import isfile
 import pickle
+import tensorflow.keras.utils
 
 def load_data(k):
     num_classes = 10
