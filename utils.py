@@ -4,13 +4,13 @@ from tensorflow import RunMetadata
 from tensorflow.profiler import profile
 from tensorflow.profiler import ProfileOptionBuilder
 from matplotlib.pyplot import plot, title, ylabel, xlabel, legend, show, figure
-from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 import numpy as np
 from os.path import isfile
 import pickle
 
-def load_data():
+def load_data(k):
     num_classes = 10
 
     # if isfile('data/data.pickle'):
@@ -20,21 +20,32 @@ def load_data():
     # else:
 
     (x_train, y_train), (x_test, y_test) = ld()
+
+
     # x_train = x_train.astype('float32') / 255
     # x_test = x_test.astype('float32') / 255
     # x_train.shape
     # Convert class vectors to binary class matrices.
-    y_train = keras.utils.to_categorical(y_train, num_classes)
-    y_test = keras.utils.to_categorical(y_test, num_classes)
+    y_train = tensorflow.keras.utils.to_categorical(y_train, num_classes)
+    y_test = tensorflow.keras.utils.to_categorical(y_test, num_classes)
 
         # with open('data/data.pickle', 'wb') as f:
         #     pickle.dump(((x_train, y_train), (x_test, y_test)), f)
 
-    # standardize instead of divide by 255, also flip the image horizontally
-    datagen = ImageDataGenerator(featurewise_center=True, featurewise_std_normalization=True, horizontal_flip=True)
-    datagen.fit(x_train)
+    n = np.shape(x_train)[0]
+    x_train, x_val = [x_train[0:int(k*n), :, :, :], x_train[int(k*n):, :, :, :]]
+    y_train, y_val = [y_train[0:int(k*n), :], y_train[int(k*n):, :]]
 
-    return (x_train, y_train), (x_test, y_test), datagen
+    # standardize instead of divide by 255, also flip the image horizontally
+    trainDatagen = ImageDataGenerator(featurewise_center=True, featurewise_std_normalization=True, horizontal_flip=True)
+    testDatagen = ImageDataGenerator(featurewise_center=True, featurewise_std_normalization=True) # Not flipping them in validation and test
+    trainDatagen.fit(x_train)
+    testDatagen.fit(x_train)
+
+    ValIter = testDatagen.flow(x_val, y_val)
+    TestIter = testDatagen.flow(x_test, y_test)
+
+    return (x_train, y_train), ValIter, TestIter, testDatagen
 
 def plot_accuracy(history):
     # Plot training & validation accuracy values
