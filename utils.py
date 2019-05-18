@@ -26,8 +26,8 @@ def load_data(k):
     # x_test = x_test.astype('float32') / 255
     # x_train.shape
     # Convert class vectors to binary class matrices.
-    y_train = tensorflow.keras.utils.to_categorical(y_train, num_classes)
-    y_test = tensorflow.keras.utils.to_categorical(y_test, num_classes)
+    y_train = keras.utils.to_categorical(y_train, num_classes)
+    y_test = keras.utils.to_categorical(y_test, num_classes)
 
         # with open('data/data.pickle', 'wb') as f:
         #     pickle.dump(((x_train, y_train), (x_test, y_test)), f)
